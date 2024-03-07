@@ -1,0 +1,43 @@
+#lang racket
+
+(define (read-lines)
+  (define line (read-line))
+  (if (eof-object? line)
+      '()
+      (cons line (read-lines))))
+
+(define map-to-num (lambda (lst)
+                     (define (convert x)
+                       (string->number x))
+                     (map convert lst)))
+
+(define repeat-el (lambda (el n)
+                    (if (<= n 0)
+                        '()
+                        (cons el (repeat-el el (- n 1)))
+                        )))
+
+(define repl-list (lambda (n lst)
+                    (if (or (null? lst) (null? (cdr lst)))
+                        '()
+                        (append (repeat-el (car (cdr lst)) n) (repl-list n (cdr lst)))
+                        )))
+
+(define output-list (lambda (lst)
+                      (cond ((null? lst)
+                            lst)
+                            ((= 1 (length lst))
+                             (print (car lst)))
+                            (else
+                             (print (car lst))
+                             (display "\n")
+                             (output-list (cdr lst)))
+                            )))
+
+;(define listik '(1 2 3))
+                            
+
+(define N (read))
+(define lst (read-lines))
+(output-list (repl-list N (map-to-num lst)))   
+              
